@@ -7,12 +7,10 @@ class MongoDBBase:
     """Base class for connecting to MongoDB and performing CRUD operations."""
 
     def __init__(self, database_name, collection_name):
-        """Initialize the MongoDB connection and collection."""
-        uri = "mongodb+srv://root:WGz8fNrUjAohWpre@cluster0.hxzuc1n.mongodb.net/?retryWrites=true&w=majority"
-        self.client = MongoClient(uri, server_api=ServerApi("1"))
-        # self.client = pymongo.MongoClient(
-        #     "localhost", 27017, username="root", password="password"
-        # )
+        self.client = MongoClient(
+            "mongodb+srv://root:WGz8fNrUjAohWpre@cluster0.y0pssa2.mongodb.net/?retryWrites=true&w=majority",
+            server_api=ServerApi("1"),
+        )
         self.database = self.client[database_name]
         self.collection = self.database[collection_name]
 
