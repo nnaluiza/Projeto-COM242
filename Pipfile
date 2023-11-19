@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+selenium = "*"
+by = "*"
+pymongo = "*"
+playwright = "*"
+flask = "*"
+requests = "*"
+bs4 = "*"
+scrapy = "*"
+selectolax = "*"
+isort = "*"
+black = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
