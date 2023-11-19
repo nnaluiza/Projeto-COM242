@@ -1,6 +1,7 @@
 import os
 
 from car_helper import read_arguments_from_file
+from cars_crawl import crawler_carros
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
@@ -24,18 +25,36 @@ cars = db.cars
 
 ## Retrieve default cars args to ṕopulate the collection
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, "car_args/default_cities.txt")
+filename = os.path.join(dirname, "./carros_args/default_cities.txt")
 
 arguments = read_arguments_from_file(filename)
-
+print(arguments)
 
 # Create a list to store the car objects.
 car_objects = []
+
 for args in arguments:
     # TODO check the arguments that will be passed to the crawler
-    # and build it from the args file
+    city = args[0]
+    year_arrive = (args[1],)
+    month_arrive = (args[2],)
+    day_arrive = (args[3],)
+    year_departure = (args[4],)
+    month_departure = (args[5],)
+    day_departure = args[6]
 
-    ## TODO replace with the right function call
-    car_objects = crawler_carros()
-    for obj in object:
-        db.cars.insert_one(obj)
+    car_objects = crawler_carros(
+        city,
+        year_arrive,
+        month_arrive,
+        day_arrive,
+        year_departure,
+        month_departure,
+        day_departure,
+    )
+
+    try:
+        for obj in object:
+            db.cars.insert_one(obj)
+    except Exception as e:
+        raise e
