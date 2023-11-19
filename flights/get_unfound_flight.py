@@ -7,8 +7,8 @@ from playwright.sync_api import sync_playwright
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-from python_project.flights.flight_crawl import run
-from python_project.flights.flight_helper import extract_flight_data
+from flight_crawl import run
+from flight_helper import extract_flight_data
 
 uri = "mongodb+srv://root:WGz8fNrUjAohWpre@cluster0.y0pssa2.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi("1"))

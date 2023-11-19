@@ -16,8 +16,8 @@ def crawler_carros(
     day_departure,
 ):
     # Inicie o webdriver (você deve ter o driver correspondente ao navegador instalado)
-    # CHROMEDRIVER_PATH = r"/usr/bin/chromedriver"
-    CHROMEDRIVER_PATH = r"C:\Users\vitor\Desktop\chromedriver-win64\chromedriver.exe"
+    CHROMEDRIVER_PATH = r"/usr/bin/chromedriver"
+    # CHROMEDRIVER_PATH = r"C:\Users\vitor\Desktop\chromedriver-win64\chromedriver.exe"
     webdriver.Chrome.driver_path = CHROMEDRIVER_PATH
     driver = webdriver.Chrome()
 
@@ -56,9 +56,7 @@ def crawler_carros(
         EC.visibility_of_element_located(
             (
                 By.CSS_SELECTOR,
-                "td[role='gridcell'][data-mat-col='0'][aria-label='"
-                + year_arrive
-                + "']",
+                "td[role='gridcell'][data-mat-col='0'][aria-label=" + year_arrive + "]",
             )
         )
     )
