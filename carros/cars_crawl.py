@@ -3,7 +3,36 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
+import unicodedata
 import time
+
+
+def nome_do_mes(numero):
+    meses = {
+        1: "janeiro",
+        2: "fevereiro",
+        3: "março",
+        4: "abril",
+        5: "maio",
+        6: "junho",
+        7: "julho",
+        8: "agosto",
+        9: "setembro",
+        10: "outubro",
+        11: "novembro",
+        12: "dezembro",
+    }
+
+    return meses.get(numero, "Número inválido")
+
+
+def remover_acentos(txt):
+    # Normaliza o texto para a forma NFD e remove marcas diacríticas (acentos)
+    txt = unicodedata.normalize("NFD", txt)
+    txt = txt.encode("ascii", "ignore")
+    txt = txt.decode("utf-8")
+    return txt
 
 
 def crawler_carros(
@@ -17,18 +46,62 @@ def crawler_carros(
 ):
     # Inicie o webdriver (você deve ter o driver correspondente ao navegador instalado)
     CHROMEDRIVER_PATH = r"/usr/bin/chromedriver"
-    # CHROMEDRIVER_PATH = r"C:\Users\vitor\Desktop\chromedriver-win64\chromedriver.exe"
+    # CHROMEDRIVER_PATH = r'C:\Users\vitor\Desktop\chromedriver-win64\chromedriver.exe'
     webdriver.Chrome.driver_path = CHROMEDRIVER_PATH
     driver = webdriver.Chrome()
 
     # Acesse o site
     driver.get("https://www.localiza.com/brasil/pt-br")
+    data_ida = str(year_arrive) + "-" + str(month_arrive) + "-" + str(day_arrive)
+    data_volta = (
+        str(year_departure) + "-" + str(month_departure) + "-" + str(day_departure)
+    )
+    cidade_destino = city
+    # Converter as strings de data em objetos datetime
+    data_ida_obj = datetime.strptime(data_ida, "%Y-%m-%d")
+    print(data_ida_obj)
+    data_volta_obj = datetime.strptime(data_volta, "%Y-%m-%d")
 
-    city = capitalize(city)
+    # Extrair ano, mês (nome) e dia
+    ano_chegada, mes_chegada, dia_chegada = (
+        data_ida_obj.year,
+        data_ida_obj.month,
+        data_ida_obj.day,
+    )
+    ano_saida, mes_saida, dia_saida = (
+        data_volta_obj.year,
+        data_volta_obj.month,
+        data_volta_obj.day,
+    )
+    ano_chegada = str(ano_chegada)
+    mes_chegada = nome_do_mes(mes_chegada)
+    dia_chegada = str(dia_chegada)
+    print(mes_chegada)
+    ano_saida = str(ano_saida)
+    mes_saida = nome_do_mes(mes_saida)
+    dia_saida = str(dia_saida)
+    # Converter o nome da cidade para minúsculas e remover acentos
+    cidade = remover_acentos(cidade_destino).lower()
 
-    # Localize o elemento input e digita o nome da cidade
+    # inputs
+    # cidade = "sao paulo"
+    # ano_chegada = "2023"
+    # mes_chegada = "novembro"
+    # dia_chegada = "21"
+
+    # ano_saida = "2023"
+    # mes_saida = "novembro"
+    # dia_saida = "30"
+
+    # função caixa alta
+    def capitalize(s):
+        return " ".join(word.capitalize() for word in s.split())
+
+    cidade = capitalize(cidade)
+
+    # Localize o elemento input e digite "rio de janeiro"
     input_element = driver.find_element(By.ID, "mat-input-1")
-    input_element.send_keys(city)
+    input_element.send_keys(cidade)
     input_element.send_keys(Keys.RETURN)
 
     # Aguarda até que o elemento dropdown esteja visível
@@ -39,7 +112,7 @@ def crawler_carros(
 
     # Clique no item desejado
     desired_item = driver.find_element(
-        By.XPATH, "//span[contains(text(), '" + city + "')]"
+        By.XPATH, "//span[contains(text(), '" + cidade + "')]"
     )
     desired_item.click()
 
@@ -56,7 +129,9 @@ def crawler_carros(
         EC.visibility_of_element_located(
             (
                 By.CSS_SELECTOR,
-                "td[role='gridcell'][data-mat-col='0'][aria-label=" + year_arrive + "]",
+                "td[role='gridcell'][data-mat-col='0'][aria-label='"
+                + ano_chegada
+                + "']",
             )
         )
     )
@@ -67,9 +142,9 @@ def crawler_carros(
             (
                 By.CSS_SELECTOR,
                 "td[role='gridcell'][aria-label='"
-                + month_arrive
+                + mes_chegada
                 + " de "
-                + year_arrive
+                + ano_chegada
                 + "']",
             )
         )
@@ -81,11 +156,11 @@ def crawler_carros(
             (
                 By.CSS_SELECTOR,
                 "td[role='gridcell'][aria-label='"
-                + day_arrive
+                + dia_chegada
                 + " de "
-                + month_arrive
+                + mes_chegada
                 + " de "
-                + year_arrive
+                + ano_chegada
                 + "']",
             )
         )
@@ -94,7 +169,7 @@ def crawler_carros(
 
     time_option = wait.until(
         EC.visibility_of_element_located(
-            (By.XPATH, "//span[contains(text(), '12:00')]")
+            (By.XPATH, "//span[contains(text(), '10:00')]")
         )
     )
     time_option.click()
@@ -111,9 +186,7 @@ def crawler_carros(
         EC.visibility_of_element_located(
             (
                 By.CSS_SELECTOR,
-                "td[role='gridcell'][data-mat-col='0'][aria-label='"
-                + year_departure
-                + "']",
+                "td[role='gridcell'][data-mat-col='0'][aria-label='" + ano_saida + "']",
             )
         )
     )
@@ -124,9 +197,9 @@ def crawler_carros(
             (
                 By.CSS_SELECTOR,
                 "td[role='gridcell'][aria-label='"
-                + month_departure
+                + mes_saida
                 + " de "
-                + year_departure
+                + ano_saida
                 + "']",
             )
         )
@@ -138,11 +211,11 @@ def crawler_carros(
             (
                 By.CSS_SELECTOR,
                 "td[role='gridcell'][aria-label='"
-                + day_departure
+                + dia_saida
                 + " de "
-                + month_departure
+                + mes_saida
                 + " de "
-                + year_departure
+                + ano_saida
                 + "']",
             )
         )
