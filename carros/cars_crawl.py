@@ -101,9 +101,9 @@ def crawler_carros(
 
     # Aguarda até que o elemento dropdown esteja visível
     wait = WebDriverWait(driver, 10)
-    dropdown = wait.until(
-        EC.visibility_of_element_located((By.CLASS_NAME, "places-list"))
-    )
+    # dropdown = wait.until(
+    #     EC.visibility_of_element_located((By.CLASS_NAME, "places-list"))
+    # )
 
     # Clique no item desejado
     desired_item = driver.find_element(
