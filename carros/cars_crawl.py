@@ -88,16 +88,6 @@ def crawler_carros(
     # Converter o nome da cidade para minúsculas e remover acentos
     cidade = remover_acentos(cidade_destino).lower()
 
-    # inputs
-    # cidade = "sao paulo"
-    # ano_chegada = "2023"
-    # mes_chegada = "novembro"
-    # dia_chegada = "21"
-
-    # ano_saida = "2023"
-    # mes_saida = "novembro"
-    # dia_saida = "30"
-
     # função caixa alta
     def capitalize(s):
         return " ".join(word.capitalize() for word in s.split())
@@ -282,9 +272,14 @@ def crawler_carros(
     print(preco_carro)
 
     time.sleep(5)
+    # Definição de coleção de hoteis
+    carros = []
+    carros.append = {"modelo": modelo_carro, "valor": preco_carro}
 
     # Quando terminar, você pode fechar o navegador:
     driver.close()
+
+    return carros
 
 
 def capitalize(s):
