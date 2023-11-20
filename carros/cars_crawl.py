@@ -54,11 +54,11 @@ def crawler_carros(
     # Acesse o site
     driver.get("https://www.localiza.com/brasil/pt-br")
     data_ida = str(year_arrive) + "-" + str(month_arrive) + "-" + str(day_arrive)
-    data_ida = re.sub(r'[()."]', '', data_ida).strip()
+    data_ida = re.sub(r'[()."]', "", data_ida).strip()
     data_volta = (
         str(year_departure) + "-" + str(month_departure) + "-" + str(day_departure)
     )
-    data_volta = re.sub(r'[()."]', '', data_volta).strip()
+    data_volta = re.sub(r'[()."]', "", data_volta).strip()
     cidade_destino = city
     # Converter as strings de data em objetos datetime
     data_ida_obj = datetime.strptime(data_ida, "%Y-%m-%d")
