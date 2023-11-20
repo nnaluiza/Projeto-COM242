@@ -2,6 +2,7 @@ import json
 from database import MongoDBBase
 from flask import Blueprint, jsonify, request
 from helper import ObjectIdEncoder
+from flights.get_unfound_flight import get_unfound_flight
 
 
 class FlightService(MongoDBBase):
@@ -69,5 +70,22 @@ def delete_flight():
     try:
         flight_service.delete_flights(filter)
         return 1
+    except Exception as e:
+        raise e
+
+
+@flight_routes.route("/crawler", methods=["GET"])
+def call_crawler():
+    filter = request.get_json()["filter"]
+    try:
+        from_place = filter["from_place"]
+        to_place = filter["to_place"]
+        departure_date = filter["departure_date"]
+        return_date = filter["return_date"]
+        new_flights = get_unfound_flight(
+            from_place, to_place, departure_date, return_date
+        )
+        json_data = json.loads(json.dumps(new_flights, cls=ObjectIdEncoder))
+        return json_data
     except Exception as e:
         raise e

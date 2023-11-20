@@ -2,6 +2,7 @@ import json
 from database import MongoDBBase
 from flask import Blueprint, jsonify, request
 from helper import ObjectIdEncoder
+from hoteis.get_unfound_hotel import get_unfound_hotel
 
 
 class HotelService(MongoDBBase):
@@ -68,5 +69,19 @@ def delete_hotel():
     try:
         hotel_service.delete_hotels(filter)
         return "Hotels deleted!"
+    except Exception as e:
+        raise e
+
+
+@hotel_routes.route("/crawler", methods=["GET"])
+def call_crawler():
+    filter = request.get_json()["filter"]
+    try:
+        city = filter["city"]
+        people = filter["people"]
+        nights = filter["nights"]
+        new_hotels = get_unfound_hotel(city, people, nights)
+        json_data = json.loads(json.dumps(new_hotels, cls=ObjectIdEncoder))
+        return json_data
     except Exception as e:
         raise e
