@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify
 
 # from flight_service import FlightService
 # from user_service import UserService
+import sys
 
+sys.path.append(".")
 from flight import flight_routes
 from hotel import hotel_routes
 from cars import car_routes

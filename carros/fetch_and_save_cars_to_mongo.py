@@ -28,7 +28,7 @@ dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, "./carros_args/default_cities.txt")
 
 arguments = read_arguments_from_file(filename)
-print(arguments)
+# print(arguments)
 
 # Create a list to store the car objects.
 car_objects = []
@@ -36,11 +36,11 @@ car_objects = []
 for args in arguments:
     # TODO check the arguments that will be passed to the crawler
     city = args[0]
-    year_arrive = (args[1],)
-    month_arrive = (args[2],)
-    day_arrive = (args[3],)
-    year_departure = (args[4],)
-    month_departure = (args[5],)
+    year_arrive = args[1]
+    month_arrive = args[2]
+    day_arrive = args[3]
+    year_departure = args[4]
+    month_departure = args[5]
     day_departure = args[6]
 
     car_objects = crawler_carros(
@@ -53,8 +53,15 @@ for args in arguments:
         day_departure,
     )
 
+    print(car_objects)
+
     try:
-        for obj in object:
+        for obj in car_objects:
+            obj["Model"]: car_objects["Model"]
+            obj["Price"]: car_objects["Price"]
+            obj["City"]: city
+            obj["Arrive date"]: car_objects["Arrive date"]
+            obj["Departure date"]: car_objects["Depature date"]
             db.cars.insert_one(obj)
     except Exception as e:
         raise e
